@@ -1,29 +1,57 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+      path: '/',
+      redirect: '/login'
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Userlogin.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/Userregister.vue'),
+    meta: { requiresAuth: false }
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const isAuthenticated = store.getters['auth/isAuthenticated']
+
+  if (requiresAuth) {
+    if (!isAuthenticated) {
+      next('/login')
+    } else {
+      try {
+        // Verificar si el token aún es válido
+        if (!store.state.auth.user) {
+          await store.dispatch('auth/fetchCurrentUser')
+        }
+        next()
+      } catch (error) {
+        next('/login')
+      }
+    }
+  } else if (isAuthenticated && (to.path === '/login' || to.path === '/register')) {
+    next('/dashboard')
+  } else {
+    next()
+  }
 })
 
 export default router
