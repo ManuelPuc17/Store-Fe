@@ -9,9 +9,9 @@
 
     <!-- Si está autenticado, mostrar layout completo -->
     <template v-else>
-      <layout>
-        <router-view />
-      </layout>
+        <layout>
+          <router-view />
+        </layout>
     </template>
   </v-app>
 </template>
