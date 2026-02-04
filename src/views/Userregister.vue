@@ -2,62 +2,73 @@
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="elevation-10">
-          <v-card-title class="text-center">
+        <v-card elevation="10">
+          <v-card-title class="justify-center text-h6">
             Registrarse
           </v-card-title>
 
           <v-card-text>
-            <v-alert v-if="error" type="error" dismissible @input="clearError">
-              {{ error }}
-            </v-alert>
 
-            <v-form @submit.prevent="handleRegister">
+
+            <v-form
+              ref="registerForm"
+              v-model="valid"
+              lazy-validation
+              @submit.prevent="RegistroUsuario"
+            >
               <v-text-field
                 v-model="form.name"
-                label="Nombre"
+                label="Nombre Completo"
                 outlined
+                prepend-icon="mdi-account"
+                :rules="nameRules"
                 required
-                :error-messages="errors.name"
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="form.email"
                 label="Email"
                 type="email"
                 outlined
+                prepend-icon="mdi-email"
+                :rules="emailRules"
                 required
-                :error-messages="errors.email"
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="form.password"
                 label="Contraseña"
                 type="password"
                 outlined
+                prepend-icon="mdi-lock"
+                :rules="passwordRules"
                 required
-                :error-messages="errors.password"
-              ></v-text-field>
+              />
 
               <v-text-field
                 v-model="form.password_confirmation"
                 label="Confirmar Contraseña"
                 type="password"
                 outlined
+                prepend-icon="mdi-lock-check"
+                :rules="confirmPasswordRules"
                 required
-              ></v-text-field>
+              />
 
               <v-btn
                 color="primary"
                 block
+                large
                 type="submit"
                 :loading="loading"
+                :disabled="!valid || loading"
+                class="mt-4"
               >
                 Registrarse
               </v-btn>
             </v-form>
 
-            <v-divider class="my-4"></v-divider>
+            <v-divider class="my-4" />
 
             <p class="text-center">
               ¿Ya tienes cuenta?
@@ -71,10 +82,32 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
 export default {
   name: 'UserRegister',
   data () {
     return {
+      valid: false,
+      loading: false,
+      error: null,
+      nameRules: [
+        v => !!v || 'El nombre es requerido',
+        v => v.length >= 3 || 'Mínimo 3 caracteres'
+      ],
+      emailRules: [
+        v => !!v || 'El email es requerido',
+        v => /.+@.+\..+/.test(v) || 'Email inválido'
+      ],
+      passwordRules: [
+        v => !!v || 'La contraseña es requerida',
+        v => v.length >= 8 || 'Mínimo 8 caracteres'
+      ],
+      confirmPasswordRules: [
+        v => !!v || 'Confirma tu contraseña',
+        v => v === this.form.password || 'Las contraseñas no coinciden'
+      ],
       form: {
         name: '',
         email: '',
@@ -89,36 +122,47 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.auth.loading
-    },
-    error () {
-      return this.$store.state.auth.error
+    URL () {
+      return (endpoint) => `${process.env.VUE_APP_API_URL}/${endpoint}`
     }
   },
   methods: {
-    async handleRegister () {
-      this.errors = { name: [], email: [], password: [] }
-
-      try {
-        await this.$store.dispatch('auth/register', this.form)
-        this.$router.push('/dashboard')
-      } catch (error) {
-        if (error.response?.data?.errors) {
-          this.errors = error.response.data.errors
-        }
+    RegistroUsuario () {
+      if (this.$refs.registerForm.validate()) {
+        this.loading = true
+        axios
+          .post(this.URL('auth/register'), this.form)
+          .then((response) => {
+            localStorage.setItem('token', response.data.token)
+            Swal.fire({
+              title: 'Registro Exitoso',
+              text: 'Tu cuenta ha sido creada correctamente',
+              icon: 'success',
+              confirmButtonText: 'Continuar'
+            }).then(() => {
+              this.$router.push('/dashboard')
+            })
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: 'Error',
+              text: error.response?.data?.message || 'Error en el registro',
+              icon: 'error',
+              confirmButtonText: 'Reintentar'
+            })
+            this.error = error.response?.data?.message || 'Error al registrarse'
+          })
+          .finally(() => {
+            this.loading = false
+          })
       }
     },
     clearError () {
-      this.$store.commit('auth/CLEAR_ERROR')
+      this.error = null
     }
   }
 }
 </script>
 
 <style scoped>
-a {
-  text-decoration: none;
-  color: #1976d2;
-}
 </style>

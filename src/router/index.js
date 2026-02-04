@@ -1,14 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-      path: '/',
-      redirect: '/login'
-  },
   {
     path: '/login',
     name: 'Login',
@@ -21,6 +16,16 @@ const routes = [
     component: () => import('@/views/Userregister.vue'),
     meta: { requiresAuth: false }
   },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('@/views/Dashboard.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/',
+    redirect: '/dashboard'
+  }
 ]
 
 const router = new VueRouter({
@@ -29,28 +34,16 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const isAuthenticated = store.getters['auth/isAuthenticated']
 
-  if (requiresAuth) {
-    if (!isAuthenticated) {
-      next('/login')
-    } else {
-      try {
-        // Verificar si el token aún es válido
-        if (!store.state.auth.user) {
-          await store.dispatch('auth/fetchCurrentUser')
-        }
-        next()
-      } catch (error) {
-        next('/login')
-      }
-    }
-  } else if (isAuthenticated && (to.path === '/login' || to.path === '/register')) {
-    next('/dashboard')
-  } else {
+  if (!requiresAuth) {
     next()
+  } else if (token) {
+    next()
+  } else {
+    next('/login')
   }
 })
 

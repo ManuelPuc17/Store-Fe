@@ -1,5 +1,4 @@
 <template>
-  
   <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
@@ -9,21 +8,12 @@
           </v-card-title>
 
           <v-card-text>
-            <v-alert
-              v-if="error"
-              type="error"
-              dense
-              dismissible
-              @input="clearError"
-            >
-              {{ error }}
-            </v-alert>
 
             <v-form
               ref="loginForm"
               v-model="valid"
               lazy-validation
-              @submit.prevent="handleLogin"
+              @submit.prevent="IniciarSesion"
             >
               <v-text-field
                 v-model="form.email"
@@ -72,13 +62,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
 export default {
   name: 'UserLogin',
   data () {
     return {
       valid: false,
-      email: '',
-      password: '',
+      loading: false,
+      error: null,
       emailRules: [
         v => !!v || 'El email es requerido',
         v => /.+@.+\..+/.test(v) || 'Email inválido'
@@ -94,36 +87,53 @@ export default {
       errors: {
         email: [],
         password: []
-      }
+      },
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.auth.loading
-    },
-    error () {
-      return this.$store.state.auth.error
+    URL () {
+      return (endpoint) => `${process.env.VUE_APP_API_URL}/${endpoint}`
     }
   },
   methods: {
-    async handleLogin () {
-      this.errors = { email: [], password: [] }
-
-      try {
-        await this.$store.dispatch('auth/login', this.form)
-        this.$router.push('/dashboard')
-      } catch (error) {
-        if (error.response?.data?.errors) {
-          this.errors = error.response.data.errors
-        }
+    IniciarSesion () {
+      if (this.$refs.loginForm.validate()) {
+        this.loading = true
+        axios
+          .post(this.URL('auth/login'), this.form)
+          .then((response) => {
+            localStorage.setItem('token', response.data.token)
+            Swal.fire({
+              title: 'Acceso Autorizado',
+              text: 'Inicio de sesión correcto',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              this.$router.push('/dashboard')
+            })
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: 'Error',
+              text: error.response?.data?.message || 'Error en el inicio de sesión',
+              icon: 'error',
+              confirmButtonText: 'Reintentar'
+            })
+            this.error = error.response?.data?.message || 'Error al iniciar sesión'
+          })
+          .finally(() => {
+            this.loading = false
+          })
       }
     },
     clearError () {
-      this.$store.commit('auth/CLEAR_ERROR')
+      this.error = null
     }
   }
 }
 </script>
 
 <style scoped>
+
 </style>
