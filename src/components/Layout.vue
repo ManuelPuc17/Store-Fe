@@ -111,7 +111,7 @@
           </v-list-item>
 
           <v-list-item
-            to="/restaurante/menu"
+            to="/restaurante/reservas/gestion"
             router
             exact
             class="pl-8"
@@ -120,7 +120,7 @@
               <v-icon small>mdi-silverware-fork-knife</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Menú</v-list-item-title>
+              <v-list-item-title>Reservas</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 

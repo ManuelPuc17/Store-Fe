@@ -39,6 +39,27 @@ const routes = [
     component: () => import('@/views/Restaurante/Mesas/s-dialog-mesas.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/restaurante/reservas/gestion',
+    name: 'Reservas',
+    component: () => import('@/views/Restaurante/Reservas/GestionReserva.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/restaurante/reservas/nueva',
+    name: 'NuevaReserva',
+    component: () => import('@/views/Restaurante/Reservas/s-dialog-reserva.vue'),
+    meta: { requiresAuth: true }
+  },
+
+
+  // configuracion de usuario - roles y permisos
+  {
+    path: '/configuracion/roles',
+    name: 'Roles',
+    component: () => import('@/views/Configuracion/Roles/Roles.vue'),
+    meta: { requiresAuth: true }
+  },
 
   // INVENTARIO - Rutas bajo el mismo layout
 
