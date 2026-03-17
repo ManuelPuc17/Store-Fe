@@ -146,6 +146,7 @@ export default {
   mounted () {
     this.getReservas()
   },
+  
   methods: {
     getReservas () {
       this.loading = true

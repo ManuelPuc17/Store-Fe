@@ -7,24 +7,14 @@
   >
     <v-card>
       <!-- Toolbar -->
-      <v-toolbar dark color="primary">
-        <v-toolbar-title>{{ tituloDialog }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-
-        <v-btn
-          dark
-          text
-          @click="guardarReserva()"
-          :loading="loading"
-        >
-          <v-icon left>mdi-content-save</v-icon>
-          Guardar
-        </v-btn>
-
-        <v-btn icon dark @click="cerrarDialog()">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
+        <v-card-title class="pa-0">
+          <s-toolbar-modal
+            titulo="Reserva"
+            :id="reservaIdEdicion"
+            @guardar="guardarReserva"
+            @cerrar="cerrarDialog"
+          />
+        </v-card-title>
 
       <!-- Contenido -->
       <v-card-text class="pa-6">
@@ -180,7 +170,7 @@
                 <div class="d-flex justify-space-between caption">
                   <span>Duración:</span>
                   <span class="font-weight-medium">{{ Math.floor(resumenPrecio.duracion / 60) }}h
-{{ resumenPrecio.duracion % 60 }}m </span>
+                  {{ resumenPrecio.duracion % 60 }}m </span>
                 </div>
                 <div class="d-flex justify-space-between caption mt-1">
                   <span>Precio base:</span>
@@ -218,9 +208,13 @@
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import SToolbarModal from '@/components/s-toolbar-modal.vue'
 
 export default {
   name: 'ReservaDialog',
+  components: {
+    SToolbarModal
+  },
   data () {
     return {
       dialog: false,
@@ -387,7 +381,7 @@ export default {
       const horasExtra = horas > 1 ? horas - 1 : 0
       const precioExtra = horasExtra * precioExtraHora
 
-      const total = precioBase + precioExtra
+      const total = parseFloat(precioBase) + parseFloat(precioExtra)
 
       this.resumenPrecio = {
         duracion,
@@ -421,7 +415,7 @@ export default {
 
       const request = this.esNueva
         ? axios.post(url, payload, config)
-        : axios.post(url, payload, config)
+        : axios.put(url, payload, config)
 
       request
         .then((response) => {
@@ -446,12 +440,12 @@ export default {
         })
         .catch((error) => {
           const mensaje = error.response?.data?.message || 'Error al guardar la reserva'
-          this.mostrarError(mensaje)
           Swal.fire({
+            icon: 'error',
             title: 'Error',
             text: mensaje,
-            icon: 'error',
-            confirmButtonText: 'Reintentar'
+            showConfirmButton: false,
+            timer: 2000
           })
         })
         .finally(() => {

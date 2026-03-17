@@ -7,28 +7,15 @@
   >
     <v-card>
       <!-- Toolbar del diálogo -->
-      <v-toolbar dark color="primary">
-        <v-toolbar-title>{{ tituloDialog }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-
-        <v-btn
-          dark
-          text
-          @click="guardarRol()"
-          :loading="loading"
-        >
-          <v-icon left>mdi-content-save</v-icon>
-          Guardar
-        </v-btn>
-
-        <v-btn
-          icon
-          dark
-          @click="cerrarDialog()"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
+        <v-card-title class="pa-0">
+          <s-toolbar-modal
+            titulo="Rol"
+            :id="rolIdEdicion"
+            @guardar="guardarRol"
+            modelo="tipo_usuario"
+            @cerrar="cerrarDialog"
+          />
+        </v-card-title>
 
       <!-- Contenido del diálogo -->
       <v-card-text class="pa-6">
@@ -113,9 +100,14 @@
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import SToolbarModal from '@/components/s-toolbar-modal.vue'
+
 
 export default {
   name: 'RolDialog',
+  components: {
+    SToolbarModal
+  },
   data () {
     return {
       dialog: false,
@@ -147,9 +139,6 @@ export default {
   computed: {
     URL () {
       return (endpoint) => `${process.env.VUE_APP_API_URL}/${endpoint}`
-    },
-    tituloDialog () {
-      return this.esNueva ? 'Crear Nuevo Rol' : `Editar Rol - ${this.registroActual.nombre || 'Sin nombre'}`
     }
   },
   methods: {
