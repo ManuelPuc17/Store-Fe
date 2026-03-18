@@ -115,7 +115,7 @@ export default {
 
   methods: {
 
-    // 🔥 GET MENUS
+    // GET MENUS
     getMenus () {
       this.loading = true
       const token = localStorage.getItem('token')

@@ -139,16 +139,16 @@
           </v-list-item>
 
           <v-list-item
-            to="/restaurante/cocina"
+            to="/restaurante/pedidos/gestion"
             router
             exact
             class="pl-8"
           >
             <v-list-item-icon>
-              <v-icon small>mdi-chef-hat</v-icon>
+              <v-icon small>mdi-clipboard-list</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Cocina</v-list-item-title>
+              <v-list-item-title>Pedido</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -159,10 +159,10 @@
             class="pl-8"
           >
             <v-list-item-icon>
-              <v-icon small>mdi-clipboard-list</v-icon>
+              <v-icon small>mdi-chef-hat</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Facturación</v-list-item-title>
+              <v-list-item-title>Cocina</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
