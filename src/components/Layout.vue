@@ -117,7 +117,7 @@
             class="pl-8"
           >
             <v-list-item-icon>
-              <v-icon small>mdi-silverware-fork-knife</v-icon>
+              <v-icon small>mdi-calendar-alert-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>Reservas</v-list-item-title>
@@ -125,16 +125,16 @@
           </v-list-item>
 
           <v-list-item
-            to="/restaurante/pedidos"
+            to="/restaurante/menu/gestion"
             router
             exact
             class="pl-8"
           >
             <v-list-item-icon>
-              <v-icon small>mdi-clipboard-list</v-icon>
+              <v-icon small>mdi-silverware-fork-knife</v-icon> 
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Pedidos</v-list-item-title>
+              <v-list-item-title>Menú</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -159,7 +159,7 @@
             class="pl-8"
           >
             <v-list-item-icon>
-              <v-icon small>mdi-receipt</v-icon>
+              <v-icon small>mdi-clipboard-list</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>Facturación</v-list-item-title>

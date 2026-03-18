@@ -94,6 +94,10 @@ export default {
     id: [Number, String],
     guardar: Boolean,
     modelo: String,
+    permiso: {
+    type: Object,
+    default: null
+  }
   },
 
   data() {
@@ -105,7 +109,22 @@ export default {
   computed:{
     URL(){
         return (endpoint,params='') => `${process.env.VUE_APP_API_URL}${endpoint}${params}`
-      }
+      },
+    esNuevo() {
+        return !this.id
+    },
+
+    puedeGuardar() {
+        if (!this.permiso) return true
+        return this.esNuevo
+        ? this.permiso.nuevo
+        : this.permiso.editar
+    },
+
+    puedeEliminar() {
+        if (!this.permiso) return true
+        return this.permiso.eliminar
+    }
     },
     methods: {
         mostrarLog() {

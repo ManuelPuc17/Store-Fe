@@ -51,6 +51,18 @@ const routes = [
     component: () => import('@/views/Restaurante/Reservas/s-dialog-reserva.vue'),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/restaurante/menu/gestion',
+    name: 'Menu',
+    component: () => import('@/views/Restaurante/Menu/GestionMenu.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/restaurante/menu/nuevo',
+    name: 'NuevoMenu',
+    component: () => import('@/views/Restaurante/Menu/s-dialog-menu.vue'),
+    meta: { requiresAuth: true }
+  },
 
 
   // configuracion de usuario - roles y permisos

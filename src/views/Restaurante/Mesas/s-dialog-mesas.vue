@@ -11,6 +11,7 @@
           <s-toolbar-modal
             titulo="Mesa"
             :id="mesaIdEdicion"
+            :permiso="permisoUsuario"
             @guardar="guardarMesa"
             @cerrar="cerrarDialog"
           />
@@ -21,7 +22,7 @@
         <v-form ref="mesaForm" v-model="formValido" lazy-validation>
           <v-row dense>
             <!-- Columna de Imagen -->
-            <v-col cols="12" sm="4" md="3">
+            <!-- <v-col cols="12" sm="4" md="3">
               <div class="text-center">
                 <v-img
                   v-if="imagenActual"
@@ -46,7 +47,7 @@
                   @change="previewImagen"
                 />
               </div>
-            </v-col>
+            </v-col> -->
 
             <!-- Columna 1 -->
             <v-col cols="12" sm="4" md="3">
@@ -143,6 +144,11 @@ export default {
   },
   data () {
     return {
+      permiso: {
+      nuevo: true,
+      editar: true,
+      eliminar: false
+      },
       dialog: false,
       loading: false,
       formValido: false,

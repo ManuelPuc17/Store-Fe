@@ -12,7 +12,6 @@
             titulo="Rol"
             :id="rolIdEdicion"
             @guardar="guardarRol"
-            modelo="tipo_usuario"
             @cerrar="cerrarDialog"
           />
         </v-card-title>
