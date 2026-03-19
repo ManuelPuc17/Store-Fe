@@ -153,7 +153,7 @@
           </v-list-item>
 
           <v-list-item
-            to="/restaurante/facturacion"
+            to="/restaurante/pedidos/detalles/:id"
             router
             exact
             class="pl-8"
@@ -162,7 +162,7 @@
               <v-icon small>mdi-chef-hat</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Cocina</v-list-item-title>
+              <v-list-item-title>Plantillas</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>

@@ -69,12 +69,12 @@ const routes = [
     component: () => import('@/views/Restaurante/Pedidos/GestionPedidos.vue'),
     meta: { requiresAuth: true }
   },
-  // {
-  //   path: '/restaurante/pedidos/nuevo',
-  //   name: 'NuevoPedido',
-  //   component: () => import('@/views/Restaurante/Pedidos/s-dialog-pedido.vue'),
-  //   meta: { requiresAuth: true }
-  // },
+  {
+    path: '/restaurante/pedidos/detalles/:id',
+    name: 'DetallesPedido',
+    component: () => import('@/views/Restaurante/Pedidos/Plantilla-factura.vue'),
+    meta: { requiresAuth: true }
+  },
 
 
   // configuracion de usuario - roles y permisos

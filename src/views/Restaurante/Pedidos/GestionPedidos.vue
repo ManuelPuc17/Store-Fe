@@ -4,6 +4,7 @@
 
       <!-- Dialog para crear/editar pedido -->
       <PedidoDialog ref="pedidoDialog" @pedido-creado="getPedidos" />
+      <PedidoDetalle ref="PedidoDetalle" />
 
       <!-- Tabla de pedidos -->
       <v-data-table
@@ -80,10 +81,11 @@
 <script>
 import axios from 'axios'
 import PedidoDialog from './PedidosCarrito.vue'
+import PedidoDetalle from './s-dialog-detallepedido.vue'
 
 export default {
   name: 'Pedidos',
-  components: { PedidoDialog },
+  components: { PedidoDialog, PedidoDetalle },
   data() {
     return {
       pedidos: [],
@@ -127,8 +129,9 @@ export default {
       this.$refs.pedidoDialog.cargarPedido(pedido.id)
     },
     verDetalle(pedido) {
-      console.log('Ver detalle del pedido', pedido)
+      this.$refs.PedidoDetalle.abrir(pedido)
     }
+
   }
 }
 </script>
