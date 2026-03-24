@@ -87,11 +87,36 @@ const routes = [
 
   // INVENTARIO - Rutas bajo el mismo layout
 
+  {
+    path: '/inventario/productos/gestion',
+    name: 'Productos',
+    component: () => import('@/views/Inventario/Producto/GestionProducto.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/inventario/productos/nuevo', //no se ocupan
+    name: 'NuevoProducto',
+    component: () => import('@/views/Inventario/Producto/s-dialog-producto.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/inventario/movimientos/gestion',
+    name: 'Movimientos',
+    component: () => import('@/views/Inventario/Movimiento/GestionMovimiento.vue'),
+    meta: { requiresAuth: true }
+  },
+
   // Ruta por defecto
   {
     path: '/',
     redirect: '/dashboard'
   },
+  {
+    path:'/about',
+    name:'About',
+    component: () => import('@/views/About.vue'),
+    meta: { requiresAuth: false }
+  }
 
   // // Rutas no encontradas
   // {

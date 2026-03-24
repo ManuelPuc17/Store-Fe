@@ -87,7 +87,7 @@
         </v-list-item>
 
         <!-- RESTAURANTE - Con sub-menú expandible -->
-        <v-list-group
+        <!-- <v-list-group
           :value="true"
           prepend-icon="mdi-restaurant"
         >
@@ -95,7 +95,7 @@
             <v-list-item-title>Restaurante</v-list-item-title>
           </template>
 
-          <!-- Sub-items de Restaurante -->
+
           <v-list-item
             to="/restaurante/mesas/gestion"
             router
@@ -165,7 +165,7 @@
               <v-list-item-title>Plantillas</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list-group>
+        </v-list-group> -->
 
         <!-- INVENTARIO - Con sub-menú expandible -->
         <v-list-group prepend-icon="mdi-warehouse">
@@ -175,7 +175,7 @@
 
           <!-- Sub-items de Inventario -->
           <v-list-item
-            to="/inventario/productos"
+            to="/inventario/productos/gestion"
             router
             exact
             class="pl-8"
@@ -217,7 +217,7 @@
           </v-list-item>
 
           <v-list-item
-            to="/inventario/entradas"
+            to="/inventario/movimientos/gestion"
             router
             exact
             class="pl-8"
@@ -226,7 +226,7 @@
               <v-icon small>mdi-arrow-right-box</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Entradas</v-list-item-title>
+              <v-list-item-title>Entradas / Salidas</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -329,7 +329,7 @@
           </v-list-item>
 
           <v-list-item
-            to="/configuracion/empresa"
+            to="/about"
             router
             exact
             class="pl-8"
